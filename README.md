@@ -1,6 +1,6 @@
 # LIV Document Format - Live Interactive Visual Documents
 
-A modern, secure, and interactive document format that combines HTML, CSS, JavaScript, and WebAssembly in a single portable file.
+A modern, secure, and interactive document format that combines HTML, CSS, JavaScript, and WebAssembly in a single portable file. Now featuring a comprehensive PDF editor with beautiful animations and modern UI.
 
 ## 🚀 Features
 
@@ -13,6 +13,10 @@ A modern, secure, and interactive document format that combines HTML, CSS, JavaS
 - **🛠️ Multiple SDKs**: JavaScript, Python, and CLI interfaces
 - **🎨 WYSIWYG Editor**: Visual document creation tool
 - **🖥️ Desktop Application**: Native cross-platform viewer
+- **📝 PDF Editor**: Full-featured PDF editor with 25+ operations
+- **🎭 Beautiful Animations**: Powered by Anime.js with 10+ animation types
+- **🎨 Google Fonts**: 8 integrated Google Fonts with 12 total font options
+- **🌈 Color Presets**: 42 curated colors from Material Design & Tailwind CSS
 
 ## Architecture
 
@@ -53,6 +57,60 @@ make build
 make test
 ```
 
+### Desktop Application
+
+The LIV desktop application includes a comprehensive PDF editor with modern UI and beautiful animations.
+
+```bash
+# Navigate to desktop folder
+cd desktop
+
+# Install dependencies
+npm install
+
+# Run the application
+npm start
+```
+
+#### PDF Editor Features
+
+**PDF Operations (25+ methods)**:
+- Create, open, merge, split PDFs
+- Rotate, compress, encrypt/decrypt
+- Add watermarks, stamps, signatures
+- Form filling and annotations
+- Bookmarks and attachments
+- QR codes and barcodes
+
+**Editing Tools**:
+- Text tool with Google Fonts (8 fonts integrated)
+- Image tool with drag & drop
+- Shape tools (rectangle, circle, line)
+- Signature and stamp tools
+- Component library with drag & drop
+
+**UI/UX Features**:
+- Modern dark theme design
+- 60+ keyboard shortcuts
+- 42 color presets (Material Design, Tailwind CSS, Grayscale)
+- 10+ animation types powered by Anime.js
+- Real-time preview and zoom controls
+- Drag and drop components
+- Toast notifications
+- Loading animations
+- Confetti celebrations
+
+**Keyboard Shortcuts**:
+- `Ctrl+Shift+N`: New PDF
+- `Ctrl+O`: Open PDF
+- `Ctrl+S`: Save PDF
+- `Ctrl+Z`: Undo
+- `Ctrl+Y`: Redo
+- `Ctrl++`: Zoom In
+- `Ctrl+-`: Zoom Out
+- `Ctrl+/`: Show shortcuts guide
+- And 50+ more shortcuts!
+
 ### Creating a LIV Document
 
 ```bash
@@ -88,6 +146,15 @@ go run examples/create-document/main.go
 │   ├── src/          # Source code
 │   ├── wasm/         # Generated WASM bindings
 │   └── dist/         # Built JavaScript
+├── desktop/           # Electron desktop application
+│   ├── src/          # Application source
+│   │   ├── pdf-editor.html      # PDF editor UI
+│   │   ├── pdf-editor.css       # Editor styles (1,200+ lines)
+│   │   ├── pdf-editor.js        # Editor logic (1,500+ lines)
+│   │   ├── pdf-operations.js    # PDF operations (25 methods)
+│   │   └── keybindings-manager.js # Keyboard shortcuts (60+)
+│   ├── main.js       # Electron main process (22 IPC handlers)
+│   └── package.json  # Desktop dependencies
 ├── examples/          # Example documents and code
 ├── docs/             # Documentation
 └── tests/            # Test files
@@ -259,6 +326,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [x] Rust WASM interactive engine  
 - [x] JavaScript and Python SDKs
 - [x] Desktop application (Electron-based)
+- [x] **Comprehensive PDF Editor** with 25+ operations
+- [x] **Google Fonts Integration** (8 fonts, 12 total options)
+- [x] **Color Presets System** (42 curated colors)
+- [x] **Beautiful Animations** (10+ types powered by Anime.js)
+- [x] **Keyboard Shortcuts** (60+ customizable shortcuts)
+- [x] **Modern UI/UX** (Dark theme, responsive design)
 - [x] Security system with sandboxing
 - [x] Performance optimization and monitoring
 - [x] Comprehensive test suite (unit, integration, e2e, performance)
@@ -272,12 +345,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Real-time collaboration features
 - [ ] Advanced plugin system architecture
 - [ ] Cloud-based document hosting
+- [ ] PDF editor cloud sync
+- [ ] Additional Google Fonts (user requests)
+- [ ] Custom color palette creation
 
 ### 🔮 Future (v2.0+)
 - [ ] AI-powered content generation
 - [ ] Blockchain-based verification
 - [ ] Extended WASM capabilities
 - [ ] Advanced analytics and insights
+- [ ] PDF OCR and text extraction
+- [ ] Advanced animation presets
+- [ ] Template library for common documents
 
 ## Support
 
