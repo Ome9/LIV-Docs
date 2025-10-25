@@ -1,0 +1,37 @@
+{
+  "document": {
+    "title": "Sample LIV Document",
+    "type": "demonstration",
+    "features": [
+      "animations",
+      "interactivity",
+      "responsive_design",
+      "fallback_support"
+    ]
+  },
+  "statistics": {
+    "creation_date": "2024-01-15",
+    "file_count": 6,
+    "estimated_size": "15KB",
+    "compression_ratio": 0.65
+  },
+  "demo_data": {
+    "chart_data": [
+      {"label": "Security", "value": 95},
+      {"label": "Performance", "value": 88},
+      {"label": "Compatibility", "value": 92},
+      {"label": "Usability", "value": 90}
+    ],
+    "animation_settings": {
+      "duration": 2000,
+      "easing": "ease-in-out",
+      "iterations": "infinite"
+    }
+  },
+  "metadata": {
+    "format_version": "1.0",
+    "created_with": "LIV Format Tools",
+    "license": "MIT",
+    "tags": ["sample", "demo", "interactive", "document"]
+  }
+}

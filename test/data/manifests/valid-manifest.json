@@ -1,0 +1,123 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Valid Test Document",
+    "author": "Test Author",
+    "description": "A valid manifest for testing purposes",
+    "created": "2024-01-01T00:00:00Z",
+    "modified": "2024-01-01T00:00:00Z",
+    "language": "en",
+    "keywords": ["test", "valid", "manifest"],
+    "license": "MIT"
+  },
+  "security": {
+    "permissions": {
+      "wasm": {
+        "memoryLimit": 67108864,
+        "allowNetworking": false,
+        "allowFileSystem": false,
+        "allowedImports": ["env"]
+      },
+      "javascript": {
+        "executionMode": "sandboxed",
+        "allowedAPIs": ["dom", "canvas"]
+      }
+    },
+    "signature": {
+      "algorithm": "RSA-SHA256",
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----",
+      "signature": "base64-encoded-signature"
+    }
+  },
+  "resources": {
+    "index.html": {
+      "type": "content",
+      "path": "content/index.html",
+      "size": 2048,
+      "checksum": "sha256:abcd1234...",
+      "encoding": "utf-8"
+    },
+    "styles.css": {
+      "type": "stylesheet",
+      "path": "assets/styles.css",
+      "size": 1024,
+      "checksum": "sha256:efgh5678...",
+      "encoding": "utf-8"
+    },
+    "logo.png": {
+      "type": "image",
+      "path": "assets/images/logo.png",
+      "size": 4096,
+      "checksum": "sha256:ijkl9012...",
+      "mimeType": "image/png"
+    },
+    "font.woff2": {
+      "type": "font",
+      "path": "assets/fonts/font.woff2",
+      "size": 8192,
+      "checksum": "sha256:mnop3456...",
+      "mimeType": "font/woff2"
+    },
+    "chart.wasm": {
+      "type": "wasm",
+      "path": "modules/chart.wasm",
+      "size": 16384,
+      "checksum": "sha256:qrst7890...",
+      "permissions": {
+        "memoryLimit": 33554432,
+        "allowedImports": ["env", "chart"]
+      }
+    }
+  },
+  "dependencies": {
+    "chart-lib": {
+      "version": "^1.0.0",
+      "type": "wasm",
+      "source": "registry"
+    }
+  },
+  "build": {
+    "tools": {
+      "builder": "liv-builder@1.0.0",
+      "optimizer": "liv-optimizer@1.0.0"
+    },
+    "options": {
+      "minify": true,
+      "optimize": true,
+      "compress": true
+    }
+  },
+  "display": {
+    "viewport": {
+      "width": "device-width",
+      "initialScale": 1.0,
+      "minimumScale": 0.5,
+      "maximumScale": 2.0
+    },
+    "orientation": "any",
+    "fullscreen": false,
+    "theme": {
+      "primaryColor": "#007acc",
+      "backgroundColor": "#ffffff",
+      "textColor": "#333333"
+    }
+  },
+  "performance": {
+    "preload": ["index.html", "styles.css"],
+    "lazy": ["chart.wasm"],
+    "cache": {
+      "strategy": "cache-first",
+      "maxAge": 86400
+    }
+  },
+  "accessibility": {
+    "features": ["screen-reader", "keyboard-navigation"],
+    "contrast": "AA",
+    "fontSize": "adjustable"
+  },
+  "compatibility": {
+    "minVersion": "1.0",
+    "maxVersion": "2.0",
+    "features": ["wasm", "canvas", "webgl"]
+  }
+}

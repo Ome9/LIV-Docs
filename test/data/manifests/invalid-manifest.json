@@ -1,0 +1,114 @@
+{
+  "version": "invalid-version",
+  "metadata": {
+    "title": "",
+    "author": null,
+    "description": 123,
+    "created": "not-a-date",
+    "modified": "2024-13-45T25:70:80Z",
+    "language": "invalid-lang-code-that-is-too-long",
+    "keywords": "should-be-array",
+    "license": {"invalid": "object"}
+  },
+  "security": {
+    "permissions": {
+      "wasm": {
+        "memoryLimit": -1,
+        "allowNetworking": "not-boolean",
+        "allowFileSystem": 123,
+        "allowedImports": "should-be-array"
+      },
+      "javascript": {
+        "executionMode": "invalid-mode",
+        "allowedAPIs": {"invalid": "object"}
+      }
+    },
+    "signature": {
+      "algorithm": "INVALID-ALGORITHM",
+      "publicKey": "not-a-valid-key",
+      "signature": 123
+    }
+  },
+  "resources": {
+    "": {
+      "type": "invalid-type",
+      "path": "",
+      "size": "not-a-number",
+      "checksum": "invalid-checksum-format",
+      "encoding": 123
+    },
+    "duplicate-key": {
+      "type": "content",
+      "path": "content/index.html"
+    },
+    "duplicate-key": {
+      "type": "stylesheet",
+      "path": "assets/styles.css"
+    },
+    "missing-required-fields": {
+      "type": "image"
+    },
+    "invalid-size": {
+      "type": "font",
+      "path": "assets/font.woff2",
+      "size": -100,
+      "checksum": "sha256:invalid"
+    }
+  },
+  "dependencies": {
+    "invalid-dep": {
+      "version": "not-semver",
+      "type": "invalid-type",
+      "source": 123
+    },
+    "": {
+      "version": "1.0.0"
+    }
+  },
+  "build": {
+    "tools": {
+      "builder": 123,
+      "optimizer": null
+    },
+    "options": {
+      "minify": "not-boolean",
+      "optimize": 123,
+      "compress": []
+    }
+  },
+  "display": {
+    "viewport": {
+      "width": 123,
+      "initialScale": "not-a-number",
+      "minimumScale": -1,
+      "maximumScale": 0
+    },
+    "orientation": "invalid-orientation",
+    "fullscreen": "not-boolean",
+    "theme": {
+      "primaryColor": "not-a-color",
+      "backgroundColor": 123,
+      "textColor": null
+    }
+  },
+  "performance": {
+    "preload": "should-be-array",
+    "lazy": 123,
+    "cache": {
+      "strategy": "invalid-strategy",
+      "maxAge": "not-a-number"
+    }
+  },
+  "accessibility": {
+    "features": "should-be-array",
+    "contrast": "invalid-level",
+    "fontSize": 123
+  },
+  "compatibility": {
+    "minVersion": 123,
+    "maxVersion": null,
+    "features": "should-be-array"
+  },
+  "invalid-root-property": "this should not be here",
+  "another-invalid-property": 123
+}

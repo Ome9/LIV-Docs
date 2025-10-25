@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIV WYSIWYG Editor Demo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .editor-app {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .app-header {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .app-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .app-btn:hover {
+            background: #2980b9;
+        }
+
+        .app-btn.secondary {
+            background: #95a5a6;
+        }
+
+        .app-btn.secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .editor-main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .liv-editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-right: 1px solid #ddd;
+        }
+
+        .editor-toolbar {
+            background: #ecf0f1;
+            border-bottom: 1px solid #bdc3c7;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            padding-right: 12px;
+            border-right: 1px solid #bdc3c7;
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .toolbar-btn {
+            background: white;
+            border: 1px solid #bdc3c7;
+            padding: 6px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .toolbar-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .toolbar-btn:active {
+            background: #e9ecef;
+        }
+
+        .toolbar-select {
+            padding: 6px 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 3px;
+            background: white;
+        }
+
+        .editor-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .editor-pane {
+            flex: 1;
+            overflow: auto;
+            display: none;
+        }
+
+        .editor-pane.active {
+            display: block;
+        }
+
+        /* WYSIWYG Pane */
+        .wysiwyg-pane {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wysiwyg-toolbar {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .tool-btn {
+            background: white;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .tool-btn:hover {
+            background: #e9ecef;
+        }
+
+        .wysiwyg-content {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            min-height: 400px;
+            outline: none;
+        }
+
+        .wysiwyg-content .placeholder {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .wysiwyg-content .selected {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+
+        .element-properties {
+            position: absolute;
+            right: 20px;
+            top: 100px;
+            width: 250px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .property-group {
+            margin-bottom: 12px;
+        }
+
+        .property-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+            font-size: 12px;
+            color: #495057;
+        }
+
+        .property-group input,
+        .property-group textarea {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ced4da;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .property-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        /* Source Pane */
+        .source-pane {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .source-tabs {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #495057;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+            background: white;
+        }
+
+        .tab-btn:hover {
+            background: #e9ecef;
+        }
+
+        .source-editors {
+            flex: 1;
+            position: relative;
+        }
+
+        .editor-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+        }
+
+        .editor-wrapper.active {
+            display: flex;
+        }
+
+        .source-editor {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+            background: #fafafa;
+        }
+
+        .editor-info {
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 8px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .format-btn, .validate-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            margin-left: 5px;
+        }
+
+        .format-btn:hover, .validate-btn:hover {
+            background: #5a6268;
+        }
+
+        .validation-results {
+            position: absolute;
+            bottom: 40px;
+            left: 15px;
+            right: 15px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .validation-results.success {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .validation-results.error {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .validation-results ul {
+            margin: 5px 0 0 20px;
+        }
+
+        /* Preview Pane */
+        .preview-pane {
+            background: white;
+            border-left: 1px solid #dee2e6;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        /* Status Bar */
+        .editor-status {
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .status-text {
+            color: #495057;
+        }
+
+        .status-text.error {
+            color: #dc3545;
+        }
+
+        .validation-status {
+            font-size: 12px;
+        }
+
+        .validation-status.valid {
+            color: #28a745;
+        }
+
+        .validation-status.invalid {
+            color: #dc3545;
+        }
+
+        /* Validation Panel */
+        .validation-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 2000;
+            max-width: 500px;
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .validation-panel h3 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .validation-errors, .validation-warnings {
+            margin-bottom: 15px;
+        }
+
+        .validation-errors h4 {
+            color: #dc3545;
+            margin-bottom: 8px;
+        }
+
+        .validation-warnings h4 {
+            color: #ffc107;
+            margin-bottom: 8px;
+        }
+
+        .validation-errors ul, .validation-warnings ul {
+            margin-left: 20px;
+        }
+
+        .validation-errors li {
+            color: #dc3545;
+            margin-bottom: 4px;
+        }
+
+        .validation-warnings li {
+            color: #856404;
+            margin-bottom: 4px;
+        }
+
+        .validation-success {
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .editor-main {
+                flex-direction: column;
+            }
+            
+            .element-properties {
+                position: relative;
+                right: auto;
+                top: auto;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-app">
+        <div class="app-header">
+            <div class="app-title">LIV WYSIWYG Editor</div>
+            <div class="app-actions">
+                <button class="app-btn" id="new-btn">New</button>
+                <button class="app-btn" id="open-btn">Open</button>
+                <button class="app-btn" id="save-btn">Save</button>
+                <button class="app-btn secondary" id="validate-btn">Validate</button>
+                <button class="app-btn secondary" id="preview-btn">Preview</button>
+            </div>
+        </div>
+        
+        <div class="editor-main">
+            <div id="editor-container"></div>
+        </div>
+    </div>
+
+    <!-- File input for opening documents -->
+    <input type="file" id="file-input" accept=".liv" style="display: none;">
+
+    <script type="module">
+        // Demo script to initialize the editor
+        import { LIVEditor } from '../js/src/editor.js';
+        import { loadLIVDocument } from '../js/src/document.js';
+
+        class EditorApp {
+            constructor() {
+                this.editor = null;
+                this.currentDocument = null;
+                this.initializeApp();
+            }
+
+            async initializeApp() {
+                const container = document.getElementById('editor-container');
+                
+                // Initialize editor
+                this.editor = new LIVEditor(container, {
+                    mode: 'wysiwyg',
+                    enablePreview: true,
+                    enableValidation: true,
+                    autoSave: false,
+                    theme: 'default'
+                });
+
+                // Load WASM module (in a real app, this would load the compiled WASM)
+                try {
+                    // Placeholder for WASM loading
+                    console.log('WASM editor engine would be loaded here');
+                    
+                    // Create a sample document for demo
+                    this.createSampleDocument();
+                } catch (error) {
+                    console.error('Failed to load WASM module:', error);
+                }
+
+                this.setupAppEventHandlers();
+            }
+
+            setupAppEventHandlers() {
+                document.getElementById('new-btn').addEventListener('click', () => {
+                    this.createNewDocument();
+                });
+
+                document.getElementById('open-btn').addEventListener('click', () => {
+                    document.getElementById('file-input').click();
+                });
+
+                document.getElementById('save-btn').addEventListener('click', () => {
+                    this.saveDocument();
+                });
+
+                document.getElementById('validate-btn').addEventListener('click', () => {
+                    this.editor.validateDocument();
+                });
+
+                document.getElementById('preview-btn').addEventListener('click', () => {
+                    this.openPreview();
+                });
+
+                document.getElementById('file-input').addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        this.openDocument(file);
+                    }
+                });
+            }
+
+            createSampleDocument() {
+                const sampleDocument = {
+                    manifest: {
+                        version: "1.0",
+                        metadata: {
+                            title: "Sample LIV Document",
+                            author: "LIV Editor",
+                            created: new Date().toISOString(),
+                            modified: new Date().toISOString(),
+                            description: "A sample document created with the LIV editor",
+                            version: "1.0.0",
+                            language: "en"
+                        },
+                        security: {
+                            wasmPermissions: {
+                                memoryLimit: 67108864,
+                                allowedImports: ["env"],
+                                cpuTimeLimit: 5000,
+                                allowNetworking: false,
+                                allowFileSystem: false
+                            },
+                            jsPermissions: {
+                                executionMode: "sandboxed",
+                                allowedAPIs: ["dom", "canvas"],
+                                domAccess: "write"
+                            },
+                            networkPolicy: {
+                                allowOutbound: false,
+                                allowedHosts: [],
+                                allowedPorts: []
+                            },
+                            storagePolicy: {
+                                allowLocalStorage: true,
+                                allowSessionStorage: true,
+                                allowIndexedDB: false,
+                                allowCookies: false
+                            },
+                            contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline';",
+                            trustedDomains: []
+                        },
+                        resources: {},
+                        features: {
+                            animations: true,
+                            interactivity: true,
+                            charts: false,
+                            forms: false,
+                            audio: false,
+                            video: false,
+                            webgl: false,
+                            webassembly: false
+                        }
+                    },
+                    content: {
+                        html: `<div class="container">
+                            <h1>Welcome to LIV Editor</h1>
+                            <p>This is a sample document. You can edit this content using the WYSIWYG editor or switch to source mode.</p>
+                            <div class="highlight-box">
+                                <h2>Interactive Content</h2>
+                                <p>LIV documents support interactive elements, animations, and WASM modules.</p>
+                            </div>
+                        </div>`,
+                        css: `.container {
+                            max-width: 800px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            font-family: Arial, sans-serif;
+                        }
+                        
+                        .highlight-box {
+                            background: #e3f2fd;
+                            padding: 20px;
+                            border-radius: 8px;
+                            border-left: 4px solid #2196f3;
+                            margin: 20px 0;
+                        }
+                        
+                        h1 {
+                            color: #333;
+                            margin-bottom: 20px;
+                        }
+                        
+                        h2 {
+                            color: #1976d2;
+                            margin-bottom: 15px;
+                        }`,
+                        interactiveSpec: "",
+                        staticFallback: ""
+                    },
+                    assets: new Map(),
+                    signatures: {
+                        contentSignature: "",
+                        manifestSignature: "",
+                        wasmSignatures: {}
+                    },
+                    wasmModules: new Map()
+                };
+
+                this.currentDocument = sampleDocument;
+                this.editor.openDocument(sampleDocument);
+            }
+
+            createNewDocument() {
+                this.createSampleDocument();
+                this.updateStatus('New document created');
+            }
+
+            async openDocument(file) {
+                try {
+                    // In a real implementation, this would use the LIV document loader
+                    const arrayBuffer = await file.arrayBuffer();
+                    // const document = await loadLIVDocument(arrayBuffer);
+                    
+                    // For demo, just show that file was selected
+                    this.updateStatus(`File selected: ${file.name} (${file.size} bytes)`);
+                    console.log('Would load LIV document:', file.name);
+                } catch (error) {
+                    this.updateStatus(`Failed to open document: ${error.message}`, 'error');
+                }
+            }
+
+            async saveDocument() {
+                try {
+                    if (this.editor) {
+                        const document = await this.editor.saveDocument();
+                        this.currentDocument = document;
+                        
+                        // In a real implementation, this would save to file
+                        this.updateStatus('Document saved successfully');
+                        console.log('Document saved:', document);
+                    }
+                } catch (error) {
+                    this.updateStatus(`Failed to save document: ${error.message}`, 'error');
+                }
+            }
+
+            openPreview() {
+                if (this.currentDocument) {
+                    // Open preview in new window
+                    const previewWindow = window.open('', '_blank', 'width=800,height=600');
+                    if (previewWindow) {
+                        previewWindow.document.write(`
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                                <title>Preview: ${this.currentDocument.manifest.metadata.title}</title>
+                                <style>${this.currentDocument.content.css}</style>
+                            </head>
+                            <body>
+                                ${this.currentDocument.content.html}
+                            </body>
+                            </html>
+                        `);
+                        previewWindow.document.close();
+                    }
+                }
+            }
+
+            updateStatus(message, type = 'info') {
+                // Update app status (could add a status bar to the app)
+                console.log(`[${type.toUpperCase()}] ${message}`);
+            }
+        }
+
+        // Initialize the editor app
+        new EditorApp();
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Sample LIV Document",
+    "author": "LIV Format Team",
+    "created": "2024-01-15T10:00:00Z",
+    "modified": "2024-01-15T14:30:00Z",
+    "description": "A sample document demonstrating the LIV format capabilities.",
+    "version": "1.0.0",
+    "language": "en"
+  },
+  "security": {
+    "wasm_permissions": {
+      "memory_limit": 67108864,
+      "allowed_imports": ["env"],
+      "cpu_time_limit": 10000,
+      "allow_networking": false,
+      "allow_file_system": false
+    },
+    "js_permissions": {
+      "execution_mode": "sandboxed",
+      "allowed_apis": ["canvas"],
+      "dom_access": "write"
+    },
+    "network_policy": {
+      "allow_outbound": false,
+      "allowed_hosts": [],
+      "allowed_ports": []
+    },
+    "storage_policy": {
+      "allow_local_storage": true,
+      "allow_session_storage": true,
+      "allow_indexed_db": false,
+      "allow_cookies": false
+    },
+    "content_security_policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';",
+    "trusted_domains": []
+  },
+  "resources": {
+    "content/index.html": {
+      "hash": "b2c3d4e5f6789012345678901234567890123456789012345678901234567890a1",
+      "size": 2048,
+      "type": "text/html",
+      "path": "content/index.html"
+    },
+    "content/styles/main.css": {
+      "hash": "c3d4e5f6789012345678901234567890123456789012345678901234567890a1b2",
+      "size": 1024,
+      "type": "text/css",
+      "path": "content/styles/main.css"
+    }
+  },
+  "features": {
+    "animations": true,
+    "interactivity": true,
+    "charts": false,
+    "forms": false,
+    "audio": false,
+    "video": false,
+    "webgl": false,
+    "webassembly": false
+  }
+}

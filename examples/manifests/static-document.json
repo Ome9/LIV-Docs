@@ -1,0 +1,87 @@
+{
+  "version": "1.0",
+  "metadata": {
+    "title": "Static Document Example",
+    "author": "John Smith",
+    "created": "2024-01-10T09:00:00Z",
+    "modified": "2024-01-10T09:30:00Z",
+    "description": "A simple static document with no interactive features for maximum security and compatibility.",
+    "version": "1.0.0",
+    "language": "en"
+  },
+  "security": {
+    "wasm_permissions": {
+      "memory_limit": 0,
+      "allowed_imports": [],
+      "cpu_time_limit": 0,
+      "allow_networking": false,
+      "allow_file_system": false
+    },
+    "js_permissions": {
+      "execution_mode": "none",
+      "allowed_apis": [],
+      "dom_access": "none"
+    },
+    "network_policy": {
+      "allow_outbound": false,
+      "allowed_hosts": [],
+      "allowed_ports": []
+    },
+    "storage_policy": {
+      "allow_local_storage": false,
+      "allow_session_storage": false,
+      "allow_indexed_db": false,
+      "allow_cookies": false
+    },
+    "content_security_policy": "default-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self';",
+    "trusted_domains": []
+  },
+  "resources": {
+    "manifest.json": {
+      "hash": "1a2b3c4d5e6f789012345678901234567890123456789012345678901234567890",
+      "size": 1024,
+      "type": "application/json",
+      "path": "manifest.json"
+    },
+    "content/index.html": {
+      "hash": "2b3c4d5e6f789012345678901234567890123456789012345678901234567890a1",
+      "size": 2048,
+      "type": "text/html",
+      "path": "content/index.html"
+    },
+    "content/styles/main.css": {
+      "hash": "3c4d5e6f789012345678901234567890123456789012345678901234567890a1b2",
+      "size": 4096,
+      "type": "text/css",
+      "path": "content/styles/main.css"
+    },
+    "content/static/fallback.html": {
+      "hash": "4d5e6f789012345678901234567890123456789012345678901234567890a1b2c3",
+      "size": 2048,
+      "type": "text/html",
+      "path": "content/static/fallback.html"
+    },
+    "assets/images/header-image.png": {
+      "hash": "5e6f789012345678901234567890123456789012345678901234567890a1b2c3d4",
+      "size": 32768,
+      "type": "image/png",
+      "path": "assets/images/header-image.png"
+    },
+    "assets/fonts/serif-regular.woff2": {
+      "hash": "6f789012345678901234567890123456789012345678901234567890a1b2c3d4e5",
+      "size": 24576,
+      "type": "font/woff2",
+      "path": "assets/fonts/serif-regular.woff2"
+    }
+  },
+  "features": {
+    "animations": false,
+    "interactivity": false,
+    "charts": false,
+    "forms": false,
+    "audio": false,
+    "video": false,
+    "webgl": false,
+    "webassembly": false
+  }
+}

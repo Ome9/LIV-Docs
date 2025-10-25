@@ -1,0 +1,125 @@
+{
+  "name": "liv-viewer-desktop",
+  "version": "1.0.0",
+  "description": "Desktop application for viewing Live Interactive Visual documents",
+  "main": "src/main.js",
+  "author": "LIV Format Team",
+  "license": "MIT",
+  "homepage": "https://github.com/liv-format/liv",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liv-format/liv.git"
+  },
+  "scripts": {
+    "start": "set NODE_ENV=development&& electron .",
+    "dev": "set NODE_ENV=development&& electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build",
+    "postinstall": "electron-builder install-app-deps",
+    "test": "mocha test/**/*.test.js",
+    "test:watch": "mocha test/**/*.test.js --watch"
+  },
+  "devDependencies": {
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10"
+  },
+  "dependencies": {
+    "electron-updater": "^6.1.4",
+    "electron-store": "^8.1.0",
+    "mime-types": "^2.1.35",
+    "animejs": "^3.2.2",
+    "pdfjs-dist": "^3.11.174",
+    "pdf-lib": "^1.17.1",
+    "jszip": "^3.10.1",
+    "file-saver": "^2.0.5",
+    "sortablejs": "^1.15.0",
+    "lucide": "^0.294.0"
+  },
+  "build": {
+    "appId": "com.livformat.viewer",
+    "productName": "LIV Viewer",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../bin/",
+        "to": "bin/",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "assets/icons/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "fileAssociations": [
+        {
+          "ext": "liv",
+          "name": "LIV Document",
+          "description": "Live Interactive Visual Document",
+          "icon": "assets/icons/document.icns"
+        }
+      ]
+    },
+    "win": {
+      "icon": "assets/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "fileAssociations": [
+        {
+          "ext": "liv",
+          "name": "LIV Document",
+          "description": "Live Interactive Visual Document",
+          "icon": "assets/icons/document.ico"
+        }
+      ]
+    },
+    "linux": {
+      "icon": "assets/icons/icon.png",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ],
+      "fileAssociations": [
+        {
+          "ext": "liv",
+          "name": "LIV Document",
+          "description": "Live Interactive Visual Document",
+          "mimeType": "application/x-liv"
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

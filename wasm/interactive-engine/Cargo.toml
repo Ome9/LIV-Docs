@@ -1,0 +1,32 @@
+[package]
+name = "liv-interactive-engine"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+js-sys = { workspace = true }
+web-sys = { workspace = true, features = [
+  "console",
+  "Document",
+  "Element",
+  "HtmlElement",
+  "Window",
+  "CanvasRenderingContext2d",
+  "HtmlCanvasElement",
+  "ImageData",
+  "Performance",
+  "DomRect",
+  "MouseEvent",
+  "TouchEvent",
+  "KeyboardEvent",
+  "Event",
+  "EventTarget"
+] }
+console_error_panic_hook = { workspace = true }
+wee_alloc = { workspace = true }

@@ -1,0 +1,28 @@
+# Core dependencies for LIV Python SDK
+typing-extensions>=4.0.0
+pathlib>=1.0.0
+dataclasses>=0.6; python_version<"3.7"
+
+# JSON and data validation
+jsonschema>=4.0.0
+pydantic>=1.10.0
+
+# File and archive handling
+zipfile38>=0.0.3; python_version<"3.8"
+
+# Subprocess and CLI integration
+subprocess32>=3.5.0; python_version<"3.2"
+
+# Optional async support
+aiofiles>=22.0.0; extra == "async"
+
+# Development dependencies (optional)
+pytest>=7.0.0; extra == "dev"
+pytest-cov>=4.0.0; extra == "dev"
+black>=22.0.0; extra == "dev"
+flake8>=5.0.0; extra == "dev"
+mypy>=1.0.0; extra == "dev"
+
+# Documentation dependencies (optional)
+sphinx>=5.0.0; extra == "docs"
+sphinx-rtd-theme>=1.0.0; extra == "docs"

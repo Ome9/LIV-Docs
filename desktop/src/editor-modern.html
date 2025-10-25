@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LIV Professional Editor</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body class="dark-theme">
+  <!-- Top Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="6" fill="url(#gradient)" />
+          <path d="M10 22V10H14V18H22V22H10Z" fill="white" />
+          <defs>
+            <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="100%" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">LIV Editor Pro</span>
+      </div>
+      
+      <div class="nav-actions">
+        <button class="btn btn-ghost" id="newDocBtn" title="New Document (Ctrl+N)">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+          <span>New</span>
+        </button>
+        
+        <button class="btn btn-ghost" id="openDocBtn" title="Open Document (Ctrl+O)">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 8l-5-5-5 5M12 3v12"></path>
+          </svg>
+          <span>Open</span>
+        </button>
+        
+        <button class="btn btn-primary" id="saveDocBtn" title="Save Document (Ctrl+S)">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <span>Save</span>
+        </button>
+        
+        <button class="btn btn-ghost" id="exportBtn" title="Export Document">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Export</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="navbar-right">
+      <div class="zoom-controls">
+        <button class="btn btn-sm btn-ghost" id="zoomOut" title="Zoom Out">
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <span class="zoom-display" id="zoomLevel">100%</span>
+        <button class="btn btn-sm btn-ghost" id="zoomIn" title="Zoom In">
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <button class="btn btn-ghost" id="undoBtn" title="Undo (Ctrl+Z)">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 7v6h6"></path>
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+        </svg>
+      </button>
+      
+      <button class="btn btn-ghost" id="redoBtn" title="Redo (Ctrl+Y)">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 7v6h-6"></path>
+          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path>
+        </svg>
+      </button>
+      
+      <div class="divider-vertical"></div>
+      
+      <button class="btn btn-ghost" id="settingsBtn" title="Settings">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 1v6m0 6v6m6-11.55l-5.2 3M7.2 14.55l-5.2 3M21.55 18l-3-5.2M5.45 9.8l-3-5.2M1 12h6m6 0h6"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <div class="main-container">
+    <!-- Left Sidebar - Tools & Components -->
+    <aside class="sidebar sidebar-left" id="leftSidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Tools & Components</h2>
+        <button class="btn btn-sm btn-ghost" id="toggleLeftSidebar" title="Toggle Sidebar">
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="sidebar-content">
+        <!-- Tool Tabs -->
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="components">Components</button>
+          <button class="tab-btn" data-tab="tools">PDF Tools</button>
+          <button class="tab-btn" data-tab="pages">Pages</button>
+        </div>
+        
+        <!-- Components Tab -->
+        <div class="tab-content active" id="components-tab">
+          <div class="component-section">
+            <h3 class="section-title">Text Elements</h3>
+            <div class="component-grid">
+              <div class="component-card" draggable="true" data-type="h1">
+                <div class="component-icon">H1</div>
+                <span class="component-label">Heading 1</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="h2">
+                <div class="component-icon">H2</div>
+                <span class="component-label">Heading 2</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="h3">
+                <div class="component-icon">H3</div>
+                <span class="component-label">Heading 3</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="paragraph">
+                <div class="component-icon">P</div>
+                <span class="component-label">Paragraph</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="quote">
+                <div class="component-icon">"</div>
+                <span class="component-label">Quote</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="list">
+                <div class="component-icon">•</div>
+                <span class="component-label">List</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <h3 class="section-title">Content Blocks</h3>
+            <div class="component-grid">
+              <div class="component-card" draggable="true" data-type="callout-info">
+                <div class="component-icon info">ℹ</div>
+                <span class="component-label">Info Box</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="callout-warning">
+                <div class="component-icon warning">⚠</div>
+                <span class="component-label">Warning</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="callout-success">
+                <div class="component-icon success">✓</div>
+                <span class="component-label">Success</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="code">
+                <div class="component-icon">&lt;/&gt;</div>
+                <span class="component-label">Code Block</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="table">
+                <div class="component-icon">⊞</div>
+                <span class="component-label">Table</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="image">
+                <div class="component-icon">🖼</div>
+                <span class="component-label">Image</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-section">
+            <h3 class="section-title">Layout & Media</h3>
+            <div class="component-grid">
+              <div class="component-card" draggable="true" data-type="divider">
+                <div class="component-icon">─</div>
+                <span class="component-label">Divider</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="spacer">
+                <div class="component-icon">⬚</div>
+                <span class="component-label">Spacer</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="columns">
+                <div class="component-icon">⚏</div>
+                <span class="component-label">Columns</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="video">
+                <div class="component-icon">▶</div>
+                <span class="component-label">Video</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="embed">
+                <div class="component-icon">⧉</div>
+                <span class="component-label">Embed</span>
+              </div>
+              <div class="component-card" draggable="true" data-type="tag">
+                <div class="component-icon">#</div>
+                <span class="component-label">Tag</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PDF Tools Tab -->
+        <div class="tab-content" id="tools-tab">
+          <div class="tool-section">
+            <h3 class="section-title">Page Operations</h3>
+            <button class="tool-btn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              <span>Add Page</span>
+            </button>
+            <button class="tool-btn" id="deletePageBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              <span>Delete Page</span>
+            </button>
+            <button class="tool-btn" id="duplicatePageBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Duplicate Page</span>
+            </button>
+            <button class="tool-btn" id="rotatePageBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path>
+              </svg>
+              <span>Rotate Page</span>
+            </button>
+          </div>
+
+          <div class="tool-section">
+            <h3 class="section-title">Document Tools</h3>
+            <button class="tool-btn" id="mergeBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span>Merge Documents</span>
+            </button>
+            <button class="tool-btn" id="splitBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+              </svg>
+              <span>Split Document</span>
+            </button>
+            <button class="tool-btn" id="compressBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 14 10 14 10 20"></polyline>
+                <polyline points="20 10 14 10 14 4"></polyline>
+                <line x1="14" y1="10" x2="21" y2="3"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+              </svg>
+              <span>Compress</span>
+            </button>
+            <button class="tool-btn" id="watermarkBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+              </svg>
+              <span>Add Watermark</span>
+            </button>
+          </div>
+
+          <div class="tool-section">
+            <h3 class="section-title">Annotations</h3>
+            <button class="tool-btn" id="textAnnotationBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                <line x1="9" y1="20" x2="15" y2="20"></line>
+                <line x1="12" y1="4" x2="12" y2="20"></line>
+              </svg>
+              <span>Add Text</span>
+            </button>
+            <button class="tool-btn" id="highlightBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 0 2.8L8.3 22.4a2 2 0 0 1-2.8 0L1.7 18.6a2 2 0 0 1 0-2.8L13.8 3.6a2 2 0 0 1 1.4-.6z"></path>
+                <path d="M4.5 20.5L9 16"></path>
+              </svg>
+              <span>Highlight</span>
+            </button>
+            <button class="tool-btn" id="drawBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                <path d="M2 2l7.586 7.586"></path>
+                <circle cx="11" cy="11" r="2"></circle>
+              </svg>
+              <span>Draw</span>
+            </button>
+            <button class="tool-btn" id="stampBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+              <span>Stamp</span>
+            </button>
+          </div>
+
+          <div class="tool-section">
+            <h3 class="section-title">Security</h3>
+            <button class="tool-btn" id="signBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+                <path d="M16 10.5l5 5-5 5"></path>
+              </svg>
+              <span>Digital Signature</span>
+            </button>
+            <button class="tool-btn" id="encryptBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>Encrypt</span>
+            </button>
+            <button class="tool-btn" id="redactBtn">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+              <span>Redact</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Pages Tab -->
+        <div class="tab-content" id="pages-tab">
+          <div class="pages-header">
+            <h3 class="section-title">Document Pages</h3>
+            <button class="btn btn-sm btn-primary" id="addPageBtn">
+              <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add Page
+            </button>
+          </div>
+          <div class="pages-list" id="pagesList">
+            <div class="page-thumbnail active" data-page="1">
+              <div class="page-preview">
+                <span class="page-number">1</span>
+              </div>
+              <span class="page-label">Page 1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Editor Canvas -->
+    <main class="editor-area">
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <select class="select-input" id="fontFamily" title="Font Family">
+            <option value="Inter">Inter</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Arial">Arial</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Fira Code">Fira Code</option>
+          </select>
+          
+          <select class="select-input" id="fontSize" title="Font Size">
+            <option value="12px">12px</option>
+            <option value="14">14</option>
+            <option value="16" selected>16</option>
+            <option value="18">18</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="28">28</option>
+            <option value="32">32</option>
+            <option value="36">36</option>
+          </select>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <div class="toolbar-group">
+          <button class="btn btn-sm btn-ghost" id="boldBtn" title="Bold (Ctrl+B)">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+              <path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+            </svg>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="italicBtn" title="Italic (Ctrl+I)">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="4" x2="10" y2="4"></line>
+              <line x1="14" y1="20" x2="5" y2="20"></line>
+              <line x1="15" y1="4" x2="9" y2="20"></line>
+            </svg>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="underlineBtn" title="Underline (Ctrl+U)">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
+              <line x1="4" y1="21" x2="20" y2="21"></line>
+            </svg>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="strikeBtn" title="Strikethrough">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 4H9a3 3 0 0 0-2.83 4"></path>
+              <path d="M14 12a4 4 0 0 1 0 8H6"></path>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <div class="toolbar-group">
+          <button class="btn btn-sm btn-ghost" id="alignLeftBtn" title="Align Left">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="17" y1="10" x2="3" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="17" y1="18" x2="3" y2="18"></line>
+            </svg>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="alignCenterBtn" title="Align Center">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="10" x2="6" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="18" y1="18" x2="6" y2="18"></line>
+            </svg>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="alignRightBtn" title="Align Right">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="21" y1="10" x2="7" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="21" y1="18" x2="7" y2="18"></line>
+            </svg>
+          </button>
+          <button class="btn btn-sm btn-ghost" id="alignJustifyBtn" title="Justify">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="21" y1="10" x2="3" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="21" y1="18" x2="3" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="divider-vertical"></div>
+
+        <div class="toolbar-group">
+          <input type="color" id="textColorPicker" class="color-picker" value="#1a1a1a" title="Text Color">
+          <input type="color" id="bgColorPicker" class="color-picker" value="#ffffff" title="Background Color">
+        </div>
+      </div>
+
+      <div class="canvas-wrapper" id="canvasWrapper">
+        <div class="canvas-inner" id="canvasInner">
+          <div class="document-page" id="docPage" data-page="1">
+            <div class="doc-element" data-id="1" data-type="h1">
+              <div class="element-content">
+                <h1 class="heading h1" contenteditable="true" spellcheck="true">Your Professional Document</h1>
+              </div>
+              <div class="element-toolbar">
+                <button class="element-btn" data-action="moveUp" title="Move Up">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                </button>
+                <button class="element-btn" data-action="moveDown" title="Move Down">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <button class="element-btn" data-action="duplicate" title="Duplicate">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+                <button class="element-btn danger" data-action="delete" title="Delete">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="doc-element" data-id="2" data-type="paragraph">
+              <div class="element-content">
+                <p class="paragraph" contenteditable="true" spellcheck="true">Start creating your document by dragging components from the left sidebar. Use the formatting toolbar above to style your content, and access PDF tools for advanced operations.</p>
+              </div>
+              <div class="element-toolbar">
+                <button class="element-btn" data-action="moveUp" title="Move Up">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                  </svg>
+                </button>
+                <button class="element-btn" data-action="moveDown" title="Move Down">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <button class="element-btn" data-action="duplicate" title="Duplicate">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+                <button class="element-btn danger" data-action="delete" title="Delete">
+                  <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar - Properties -->
+    <aside class="sidebar sidebar-right" id="rightSidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Properties</h2>
+        <button class="btn btn-sm btn-ghost" id="toggleRightSidebar" title="Toggle Sidebar">
+          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <!-- Document Properties -->
+        <div class="properties-section">
+          <h3 class="section-title">Document Info</h3>
+          <div class="form-group">
+            <label class="form-label" for="propTitle">Title</label>
+            <input type="text" class="form-input" id="propTitle" placeholder="My Document" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="propAuthor">Author</label>
+            <input type="text" class="form-input" id="propAuthor" placeholder="Your Name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="propVersion">Version</label>
+            <input type="text" class="form-input" id="propVersion" value="1.0.0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="propDescription">Description</label>
+            <textarea class="form-input" id="propDescription" rows="3" placeholder="Document description..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="propLanguage">Language</label>
+            <select class="form-input" id="propLanguage">
+              <option value="en">English</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="zh">Chinese</option>
+              <option value="ja">Japanese</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Document Settings -->
+        <div class="properties-section">
+          <h3 class="section-title">Document Settings</h3>
+          <div class="form-group">
+            <label class="form-label" for="propType">Document Type</label>
+            <select class="form-input" id="propType">
+              <option value="static">Static</option>
+              <option value="interactive">Interactive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" class="form-checkbox" id="propAnimations" />
+              <span>Enable Animations</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" class="form-checkbox" id="propInteractivity" />
+              <span>Enable Interactivity</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" class="form-checkbox" id="propCharts" />
+              <span>Include Charts</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" class="form-checkbox" id="propForms" />
+              <span>Include Forms</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Page Settings -->
+        <div class="properties-section">
+          <h3 class="section-title">Page Settings</h3>
+          <div class="form-group">
+            <label class="form-label" for="pageSize">Page Size</label>
+            <select class="form-input" id="pageSize">
+              <option value="a4">A4 (210 x 297 mm)</option>
+              <option value="letter">Letter (8.5 x 11 in)</option>
+              <option value="legal">Legal (8.5 x 14 in)</option>
+              <option value="a3">A3 (297 x 420 mm)</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pageOrientation">Orientation</label>
+            <select class="form-input" id="pageOrientation">
+              <option value="portrait">Portrait</option>
+              <option value="landscape">Landscape</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pageMargin">Margins (mm)</label>
+            <input type="number" class="form-input" id="pageMargin" value="20" min="0" max="50" />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Element Properties -->
+        <div class="properties-section" id="elementProps" style="display: none;">
+          <h3 class="section-title">Element Properties</h3>
+          <div id="elementPropsContent"></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-item">
+      <div class="status-dot"></div>
+      <span id="statusText">Ready</span>
+    </div>
+    <div class="status-item">
+      <svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+      </svg>
+      <span id="pageCount">1 page</span>
+    </div>
+    <div class="status-item">
+      <svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+      </svg>
+      <span id="elementCount">2 elements</span>
+    </div>
+    <div class="status-item">
+      <svg class="icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      </svg>
+      <span id="wordCount">18 words</span>
+    </div>
+    <div class="status-item ml-auto">
+      <span id="saveStatus">Last saved: Never</span>
+    </div>
+  </div>
+
+  <!-- Modals & Overlays -->
+  <div class="modal-overlay" id="modalOverlay" style="display: none;">
+    <div class="modal" id="settingsModal">
+      <div class="modal-header">
+        <h2 class="modal-title">Settings</h2>
+        <button class="btn btn-ghost btn-sm" id="closeModal">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Theme</label>
+          <select class="form-input" id="themeSetting">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="system">System</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <input type="checkbox" class="form-checkbox" id="autoSave" checked />
+            <span>Auto-save</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <input type="checkbox" class="form-checkbox" id="spellCheck" checked />
+            <span>Spell check</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancelSettingsBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="editor.js"></script>
+</body>
+</html>

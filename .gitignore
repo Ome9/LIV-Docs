@@ -1,0 +1,372 @@
+# ============================================
+# LIV File Format - Git Ignore Configuration
+# ============================================
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+build/
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+*.prof
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Go vendor directory
+vendor/
+
+# Go mod cache
+go.sum.backup
+
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+
+# ============================================
+# Node.js & JavaScript/TypeScript
+# ============================================
+
+# Dependencies
+node_modules/
+jspm_packages/
+bower_components/
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.pnpm-debug.log*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+*.lcov
+.nyc_output
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.vuepress/dist
+
+# TypeScript cache
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Optional caches
+.npm
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# JavaScript/TypeScript compiled files
+js/dist/
+js/build/
+js/lib/
+js/*.js
+js/*.d.ts
+!js/src/**/*.js
+!js/test/**/*.js
+
+# ============================================
+# Rust & WASM
+# ============================================
+
+# Rust build outputs
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb
+
+# WASM build outputs
+wasm/*/pkg/
+wasm/*/target/
+wasm/**/target/
+*.wasm
+!wasm/**/*.wasm.example
+js/wasm/
+
+# ============================================
+# Electron & Desktop
+# ============================================
+
+# Electron build outputs
+desktop/dist/
+desktop/out/
+desktop/build/
+
+# Electron Forge
+desktop/.webpack/
+desktop/.vite/
+
+# Electron packaged apps
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.snap
+*.AppImage
+*.nupkg
+*.msi
+
+# Electron installer
+installers/
+release/
+releases/
+
+# Auto-update files
+latest*.yml
+RELEASES
+
+# ============================================
+# Environment & Configuration
+# ============================================
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+config.local.json
+secrets.json
+
+# ============================================
+# IDEs & Editors
+# ============================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA / WebStorm / GoLand
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+
+# Vim
+*.swp
+*.swo
+*~
+.vim/
+.vimsettings
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# Operating System
+# ============================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ============================================
+# Logs & Temporary Files
+# ============================================
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.cache
+
+# ============================================
+# Testing & Coverage
+# ============================================
+
+# Test outputs
+test-results/
+test-reports/
+coverage/
+.nyc_output/
+*.lcov
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# Go test cache
+*.test
+*.out
+*.prof
+
+# ============================================
+# Generated & Build Files
+# ============================================
+
+# Generated code
+**/generated/
+pkg/core/generated/
+wasm/*/generated/
+
+# Documentation builds
+docs/generated/
+docs/_build/
+docs/.doctrees/
+
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# ============================================
+# Project Specific
+# ============================================
+
+# Inspiration/Reference folders (third-party examples)
+Inspiration/
+
+# LIV document test files
+*.liv.test
+*.liv.temp
+test-documents/
+test-output/
+
+# Build artifacts (distribution packages, not source)
+dist-packages/
+packages/
+*.pkg
+*.deb
+*.rpm
+
+# Examples with generated content
+examples/**/output/
+examples/**/generated/
+
+# Local development
+.local/
+.dev/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Backup files
+*-old-backup.*
+*.backup.*
