@@ -659,7 +659,7 @@
         <div class="divider"></div>
 
         <!-- Element Properties -->
-        <div class="properties-section" id="elementProps" style="display: none;">
+        <div class="properties-section hidden" id="elementProps">
           <h3 class="section-title">Element Properties</h3>
           <div id="elementPropsContent"></div>
         </div>
@@ -698,11 +698,11 @@
   </div>
 
   <!-- Modals & Overlays -->
-  <div class="modal-overlay" id="modalOverlay" style="display: none;">
+  <div class="modal-overlay hidden" id="modalOverlay">
     <div class="modal" id="settingsModal">
       <div class="modal-header">
         <h2 class="modal-title">Settings</h2>
-        <button class="btn btn-ghost btn-sm" id="closeModal">
+        <button class="btn btn-ghost btn-sm" id="closeModal" title="Close" aria-label="Close settings">
           <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -711,8 +711,8 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">Theme</label>
-          <select class="form-input" id="themeSetting">
+          <label class="form-label" for="themeSetting">Theme</label>
+          <select class="form-input" id="themeSetting" aria-label="Select theme">
             <option value="dark">Dark</option>
             <option value="light">Light</option>
             <option value="system">System</option>

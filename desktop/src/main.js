@@ -6,6 +6,9 @@ const fs = require('fs');
 const { spawn } = require('child_process');
 const mime = require('mime-types');
 
+// Import PDF operations module
+const PDFOperations = require('./pdf-operations');
+
 // Initialize electron store for settings
 const store = new Store({
   defaults: {
@@ -23,6 +26,7 @@ const store = new Store({
 let mainWindow;
 let viewerProcess;
 let viewerPort = 8080;
+let pdfOps = null; // PDF operations instance
 
 // Enable live reload for development
 if (process.env.NODE_ENV === 'development') {
@@ -251,6 +255,11 @@ function createMenu() {
           label: 'New Document...',
           accelerator: 'CmdOrCtrl+N',
           click: createNewDocument
+        },
+        {
+          label: 'New PDF...',
+          accelerator: 'CmdOrCtrl+Shift+N',
+          click: openPDFEditor
         },
         { type: 'separator' },
         {
@@ -528,6 +537,31 @@ async function createNewDocument() {
 
   // Open editor immediately to create the document
   openEditor(savePath, documentType);
+}
+
+function openPDFEditor() {
+  // Open the PDF editor window
+  const editorWindow = new BrowserWindow({
+    width: 1600,
+    height: 1000,
+    minWidth: 1200,
+    minHeight: 800,
+    icon: path.join(__dirname, '../assets/icons/icon.png'),
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
+    },
+    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
+    backgroundColor: '#0f172a'
+  });
+
+  editorWindow.loadFile(path.join(__dirname, 'pdf-editor.html'));
+  
+  // Open dev tools in development mode
+  if (process.env.NODE_ENV === 'development') {
+    editorWindow.webContents.openDevTools();
+  }
 }
 
 function openEditor(filePath, documentType) {
@@ -961,6 +995,332 @@ ipcMain.on('close-window', () => {
     mainWindow.close();
   }
 });
+
+// ========== PDF OPERATIONS IPC HANDLERS ==========
+
+// Initialize PDF operations instance
+function getPDFOps() {
+  if (!pdfOps) {
+    pdfOps = new PDFOperations();
+  }
+  return pdfOps;
+}
+
+// Load PDF from file or buffer
+ipcMain.handle('pdf-load', async (event, source) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.loadPDF(source);
+    return result;
+  } catch (error) {
+    console.error('Error loading PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Create new PDF
+ipcMain.handle('pdf-create-new', async (event, options = {}) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.createNewPDF(options.pageSize || 'Letter');
+    return result;
+  } catch (error) {
+    console.error('Error creating PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Save PDF
+ipcMain.handle('pdf-save', async (event, outputPath) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.savePDF(outputPath);
+    return result;
+  } catch (error) {
+    console.error('Error saving PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Get PDF document info
+ipcMain.handle('pdf-get-info', async (event) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.getDocumentInfo();
+    return result;
+  } catch (error) {
+    console.error('Error getting PDF info:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Set PDF document info
+ipcMain.handle('pdf-set-info', async (event, info) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.setDocumentInfo(info);
+    return result;
+  } catch (error) {
+    console.error('Error setting PDF info:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Merge PDFs
+ipcMain.handle('pdf-merge', async (event, pdfPaths) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.mergePDFs(pdfPaths);
+    return result;
+  } catch (error) {
+    console.error('Error merging PDFs:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Split PDF
+ipcMain.handle('pdf-split', async (event, ranges) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.splitPDF(ranges);
+    return result;
+  } catch (error) {
+    console.error('Error splitting PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Extract pages
+ipcMain.handle('pdf-extract-pages', async (event, pageNumbers) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.extractPages(pageNumbers);
+    return result;
+  } catch (error) {
+    console.error('Error extracting pages:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Delete pages
+ipcMain.handle('pdf-delete-pages', async (event, pageNumbers) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.deletePages(pageNumbers);
+    return result;
+  } catch (error) {
+    console.error('Error deleting pages:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Rotate pages
+ipcMain.handle('pdf-rotate-pages', async (event, pageNumbers, rotation) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.rotatePages(pageNumbers, rotation);
+    return result;
+  } catch (error) {
+    console.error('Error rotating pages:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Reorder pages
+ipcMain.handle('pdf-reorder-pages', async (event, newOrder) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.reorderPages(newOrder);
+    return result;
+  } catch (error) {
+    console.error('Error reordering pages:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add blank page
+ipcMain.handle('pdf-add-blank-page', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addBlankPage(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding blank page:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add text to PDF
+ipcMain.handle('pdf-add-text', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addText(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding text:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add image to PDF
+ipcMain.handle('pdf-add-image', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addImage(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding image:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add shape to PDF
+ipcMain.handle('pdf-add-shape', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addRectangle(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding shape:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add QR code to PDF
+ipcMain.handle('pdf-add-qrcode', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addQRCode(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding QR code:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add barcode to PDF
+ipcMain.handle('pdf-add-barcode', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addBarcode(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding barcode:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Add watermark to PDF
+ipcMain.handle('pdf-add-watermark', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.addWatermark(options);
+    return result;
+  } catch (error) {
+    console.error('Error adding watermark:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Compress PDF
+ipcMain.handle('pdf-compress', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    const quality = options?.quality || 0.8;
+    const result = await ops.compressPDF(quality);
+    return result;
+  } catch (error) {
+    console.error('Error compressing PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Encrypt PDF
+ipcMain.handle('pdf-encrypt', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    // Note: pdf-lib doesn't support encryption natively
+    // This would need an external library or Go integration
+    console.log('PDF encryption requested:', options);
+    return { 
+      success: false, 
+      error: 'PDF encryption will be implemented with Go backend integration' 
+    };
+  } catch (error) {
+    console.error('Error encrypting PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Sign PDF
+ipcMain.handle('pdf-sign', async (event, options) => {
+  try {
+    const ops = getPDFOps();
+    // Note: Digital signing requires additional libraries
+    console.log('PDF signing requested:', options);
+    return { 
+      success: false, 
+      error: 'PDF signing will be implemented with Go backend integration' 
+    };
+  } catch (error) {
+    console.error('Error signing PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Convert images to PDF
+ipcMain.handle('images-to-pdf', async (event, imagePaths) => {
+  try {
+    const ops = getPDFOps();
+    const result = await ops.imagesToPDF(imagePaths);
+    return result;
+  } catch (error) {
+    console.error('Error converting images to PDF:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Open file dialog for PDF operations
+ipcMain.handle('open-file', async (event, options = {}) => {
+  try {
+    const result = await dialog.showOpenDialog(mainWindow, {
+      title: options.title || 'Open File',
+      filters: options.filters || [{ name: 'All Files', extensions: ['*'] }],
+      properties: options.properties || ['openFile']
+    });
+
+    if (!result.canceled && result.filePaths.length > 0) {
+      return { success: true, data: result.filePaths };
+    }
+    
+    return { success: false, error: 'No file selected' };
+  } catch (error) {
+    console.error('Error opening file dialog:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Save file dialog for PDF operations
+ipcMain.handle('save-file', async (event, options = {}) => {
+  try {
+    const result = await dialog.showSaveDialog(mainWindow, {
+      title: options.title || 'Save File',
+      defaultPath: options.defaultPath || 'document.pdf',
+      filters: options.filters || [{ name: 'PDF Files', extensions: ['pdf'] }]
+    });
+
+    if (!result.canceled && result.filePath) {
+      return { success: true, data: result.filePath };
+    }
+    
+    return { success: false, error: 'No file path selected' };
+  } catch (error) {
+    console.error('Error opening save dialog:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// ========== END PDF OPERATIONS HANDLERS ==========
 
 // Auto updater events
 autoUpdater.on('checking-for-update', () => {

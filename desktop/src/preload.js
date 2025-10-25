@@ -63,6 +63,19 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Rotate pages
   rotatePages: (filePath, rotation, pageNumbers) => ipcRenderer.invoke('rotate-pages', filePath, rotation, pageNumbers),
   
+  // Additional PDF Operations
+  addTextToPDF: (options) => ipcRenderer.invoke('pdf-add-text', options),
+  addImageToPDF: (options) => ipcRenderer.invoke('pdf-add-image', options),
+  addShapeToPDF: (options) => ipcRenderer.invoke('pdf-add-shape', options),
+  addQRCodeToPDF: (options) => ipcRenderer.invoke('pdf-add-qrcode', options),
+  addBarcodeToPDF: (options) => ipcRenderer.invoke('pdf-add-barcode', options),
+  deletePDFPages: (pageNumbers) => ipcRenderer.invoke('pdf-delete-pages', pageNumbers),
+  reorderPDFPages: (newOrder) => ipcRenderer.invoke('pdf-reorder-pages', newOrder),
+  addBlankPage: (options) => ipcRenderer.invoke('pdf-add-blank-page', options),
+  getPDFInfo: () => ipcRenderer.invoke('pdf-get-info'),
+  setPDFInfo: (info) => ipcRenderer.invoke('pdf-set-info', info),
+  imagesToPDF: (imagePaths) => ipcRenderer.invoke('images-to-pdf', imagePaths),
+  
   // ===== Asset Management =====
   // Upload image
   uploadImage: (filePath) => ipcRenderer.invoke('upload-image', filePath),

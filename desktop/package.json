@@ -36,10 +36,18 @@
     "animejs": "^3.2.2",
     "pdfjs-dist": "^3.11.174",
     "pdf-lib": "^1.17.1",
+    "@pdf-lib/fontkit": "^1.1.1",
     "jszip": "^3.10.1",
     "file-saver": "^2.0.5",
     "sortablejs": "^1.15.0",
-    "lucide": "^0.294.0"
+    "lucide": "^0.294.0",
+    "jspdf": "^2.5.1",
+    "canvas": "^2.11.2",
+    "qrcode": "^1.5.3",
+    "jsbarcode": "^3.11.6",
+    "color": "^4.2.3",
+    "lodash": "^4.17.21",
+    "mousetrap": "^1.6.5"
   },
   "build": {
     "appId": "com.livformat.viewer",

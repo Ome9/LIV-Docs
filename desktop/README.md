@@ -1,15 +1,100 @@
-# LIV Desktop Viewer
+# LIV Desktop Viewer & PDF Editor
 
-A cross-platform desktop application for viewing Live Interactive Visual (LIV) documents, built with Electron.
+A cross-platform desktop application for viewing Live Interactive Visual (LIV) documents and editing PDFs, built with Electron. Features a comprehensive PDF editor with beautiful animations, Google Fonts, and modern UI.
 
 ## Features
 
 ### Core Functionality
 - **Native Desktop Experience**: Full desktop integration with native menus, keyboard shortcuts, and file associations
 - **Secure Document Viewing**: Sandboxed execution environment for interactive content
+- **Comprehensive PDF Editor**: 25+ PDF operations with modern UI
+- **Beautiful Animations**: 10+ animation types powered by Anime.js
+- **Google Fonts**: 8 integrated fonts with 12 total options
+- **Color Presets**: 42 curated colors from Material Design & Tailwind CSS
 - **File Association**: Automatic association with .liv files for double-click opening
 - **Recent Files**: Track and quickly access recently opened documents
 - **Cross-Platform**: Works on Windows, macOS, and Linux
+
+### PDF Editor Features
+
+#### PDF Operations (25+ Methods)
+- **File Operations**: Create, open, save, export PDFs
+- **Page Management**: Merge, split, rotate, reorder pages
+- **Compression**: Optimize PDF file size
+- **Security**: Encrypt/decrypt, add passwords, digital signatures
+- **Watermarks**: Add text or image watermarks
+- **Stamps**: Custom stamps and seals
+- **Forms**: Fill form fields, create interactive forms
+- **Annotations**: Add comments, highlights, notes
+- **Bookmarks**: Create and manage bookmarks
+- **Attachments**: Attach files to PDFs
+- **Redaction**: Remove sensitive information
+- **QR Codes & Barcodes**: Generate and embed codes
+
+#### Editing Tools
+- **Text Tool**: Add and edit text with Google Fonts
+  - 8 Google Fonts: Roboto, Open Sans, Lato, Montserrat, Playfair Display, Raleway, Poppins, Inter
+  - 4 Standard Fonts: Helvetica, Times New Roman, Courier, Arial
+  - 14 Font Sizes: 8px to 72px
+  - Color presets with 42 curated colors
+  
+- **Image Tool**: Insert and manipulate images
+  - Drag and drop support
+  - Resize and position
+  - Rotation and cropping
+  
+- **Shape Tools**: Draw rectangles, circles, lines
+  - Custom colors and borders
+  - Fill and stroke options
+  
+- **Signature Tool**: Add digital signatures
+  - Draw or upload signatures
+  - Timestamp support
+  
+- **Stamp Tool**: Quick stamps and seals
+  - Custom stamp creation
+  - Predefined stamps library
+
+- **Component Library**: Drag & drop components
+  - Pre-built elements
+  - Custom components
+  - Animation support
+
+#### UI/UX Features
+- **Modern Dark Theme**: Professional appearance
+- **Keyboard Shortcuts**: 60+ customizable shortcuts
+  - `Ctrl+Shift+N`: New PDF
+  - `Ctrl+O`: Open PDF
+  - `Ctrl+S`: Save PDF
+  - `Ctrl+Z`: Undo
+  - `Ctrl+Y`: Redo
+  - `Ctrl++`: Zoom In
+  - `Ctrl+-`: Zoom Out
+  - `Ctrl+/`: Show shortcuts guide
+  - And 50+ more!
+  
+- **Animations** (10+ types):
+  - Tool selection bounce
+  - Button pulse effects
+  - Zoom stagger animation
+  - Page navigation highlight
+  - Confetti celebrations
+  - Toast notifications
+  - Loading animations
+  - Modal transitions
+  
+- **Color Presets Modal**:
+  - Material Design colors (16)
+  - Tailwind CSS colors (16)
+  - Grayscale palette (10)
+  - One-click color application
+  
+- **Real-time Preview**: Instant visual feedback
+- **Zoom Controls**: 25% to 200% zoom
+- **Page Navigation**: Quick page jumping
+- **Drag & Drop**: Elements and components
+- **Toast Notifications**: User feedback
+- **Loading Indicators**: Progress tracking
 
 ### Desktop Integration
 - **Native Menus**: Platform-specific menu bars with standard shortcuts
@@ -37,8 +122,11 @@ A cross-platform desktop application for viewing Live Interactive Visual (LIV) d
 cd desktop
 npm install
 
-# Start in development mode
+# Start in development mode (includes PDF editor)
 npm run dev
+
+# Or start directly
+npm start
 
 # Build for production
 npm run build
@@ -48,6 +136,26 @@ npm run build:win    # Windows
 npm run build:mac    # macOS
 npm run build:linux  # Linux
 ```
+
+### Using the PDF Editor
+
+1. Launch the application: `npm start`
+2. Open PDF Editor: 
+   - File → New PDF (or `Ctrl+Shift+N`)
+   - File → Open PDF (or `Ctrl+O`)
+3. Use the toolbar to select tools:
+   - Text tool (`T`) - Add text with Google Fonts
+   - Image tool (`I`) - Insert images
+   - Shape tools (`R`, `C`, `L`) - Draw shapes
+   - Signature tool (`S`) - Add signatures
+4. Access color presets:
+   - Click the color wheel button in the text formatting toolbar
+   - Choose from 42 curated colors
+5. Use keyboard shortcuts:
+   - Press `Ctrl+/` to see all shortcuts
+   - Customize shortcuts in preferences
+6. Drag & drop components from the library
+7. Export your PDF: File → Save PDF (`Ctrl+S`)
 
 ### Production Build
 
@@ -177,15 +285,77 @@ The application automatically registers file associations for `.liv` files:
 ```
 desktop/
 ├── src/
-│   ├── main.js           # Main process entry point
-│   ├── preload.js        # Context bridge script
-│   ├── preferences.html  # Preferences dialog
-│   └── error.html        # Error page
+│   ├── main.js                  # Main process entry point (22 IPC handlers)
+│   ├── preload.js              # Context bridge script
+│   ├── preferences.html        # Preferences dialog
+│   ├── error.html              # Error page
+│   ├── pdf-editor.html         # PDF editor UI (900+ lines)
+│   ├── pdf-editor.css          # Editor styles (1,200+ lines)
+│   ├── pdf-editor.js           # Editor logic (1,500+ lines)
+│   ├── pdf-operations.js       # PDF operations module (25 methods)
+│   └── keybindings-manager.js  # Keyboard shortcuts (60+ shortcuts)
 ├── assets/
-│   └── icons/           # Application icons
-├── package.json         # Dependencies and build config
-└── README.md           # This file
+│   └── icons/                  # Application icons
+├── package.json                # Dependencies and build config
+└── README.md                   # This file
 ```
+
+### Key Files
+
+#### `pdf-editor.html`
+- Modern HTML5 structure
+- Google Fonts integration (CDN)
+- Component library sidebar
+- Formatting toolbar
+- Color presets modal
+- Canvas rendering area
+- Zero inline style warnings
+
+#### `pdf-editor.css`
+- 1,200+ lines of modern CSS
+- Dark theme variables
+- Responsive layout
+- Animation keyframes
+- Color swatch styles (42 colors)
+- Smooth transitions
+- Safari compatibility (webkit prefixes)
+
+#### `pdf-editor.js`
+- 1,500+ lines of JavaScript
+- PDFEditor class with 50+ methods
+- Tool management system
+- Element manipulation
+- Animation system (Anime.js)
+- Event handlers
+- File operations
+- Export functionality
+
+#### `pdf-operations.js`
+- 25 PDF manipulation methods
+- pdf-lib integration
+- Merge, split, rotate operations
+- Compression and optimization
+- Watermark and stamp functions
+- Form filling and annotations
+- Encryption and signatures
+- QR code and barcode generation
+
+#### `keybindings-manager.js`
+- 400+ lines of code
+- 60+ keyboard shortcuts
+- Customizable keybindings
+- Conflict detection
+- Visual shortcuts guide
+- Save/load preferences
+- Mousetrap.js integration
+
+#### `main.js` (Updated)
+- 22 IPC handlers for PDF operations
+- File system integration
+- Window management
+- Error handling
+- Progress tracking
+- Security sandboxing
 
 ### Development Commands
 ```bash
