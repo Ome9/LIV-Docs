@@ -37,6 +37,7 @@ of PDF with modern web technologies for interactive content.`,
 	rootCmd.AddCommand(convertCmd())
 	rootCmd.AddCommand(validateCmd())
 	rootCmd.AddCommand(signCmd())
+	rootCmd.AddCommand(pdfCmd())
 
 	// Execute the root command
 	if err := rootCmd.Execute(); err != nil {
@@ -1552,4 +1553,57 @@ func runSign(file, keyFile, outputFile string) error {
 	fmt.Printf("  Output: %s\n", outputFile)
 
 	return nil
+}
+
+func pdfCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "pdf",
+		Short: "PDF operations (extract, merge, split, etc.)",
+		Long: `Comprehensive PDF manipulation operations.
+Use the liv-pdf binary for full PDF functionality, or call operations from here.`,
+	}
+
+	cmd.AddCommand(pdfExtractTextCmd())
+	cmd.AddCommand(pdfToLIVCmd())
+
+	return cmd
+}
+
+func pdfExtractTextCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "extract-text [input.pdf]",
+		Short: "Extract text from PDF",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// Call liv-pdf binary
+			pdfCmd := exec.Command("liv-pdf", "extract-text", args[0])
+			pdfCmd.Stdout = os.Stdout
+			pdfCmd.Stderr = os.Stderr
+			return pdfCmd.Run()
+		},
+	}
+}
+
+func pdfToLIVCmd() *cobra.Command {
+	var output string
+
+	cmd := &cobra.Command{
+		Use:   "to-liv [input.pdf]",
+		Short: "Convert PDF to LIV format",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			pdfArgs := []string{"to-liv", args[0]}
+			if output != "" {
+				pdfArgs = append(pdfArgs, "--output", output)
+			}
+
+			pdfCmd := exec.Command("liv-pdf", pdfArgs...)
+			pdfCmd.Stdout = os.Stdout
+			pdfCmd.Stderr = os.Stderr
+			return pdfCmd.Run()
+		},
+	}
+
+	cmd.Flags().StringVarP(&output, "output", "o", "", "Output file path")
+	return cmd
 }

@@ -24,30 +24,30 @@
     "test:watch": "mocha test/**/*.test.js --watch"
   },
   "devDependencies": {
+    "chai": "^4.3.10",
     "electron": "^27.0.0",
     "electron-builder": "^24.6.4",
-    "mocha": "^10.2.0",
-    "chai": "^4.3.10"
+    "electron-reload": "^2.0.0-alpha.1",
+    "mocha": "^10.2.0"
   },
   "dependencies": {
-    "electron-updater": "^6.1.4",
-    "electron-store": "^8.1.0",
-    "mime-types": "^2.1.35",
-    "animejs": "^3.2.2",
-    "pdfjs-dist": "^3.11.174",
-    "pdf-lib": "^1.17.1",
     "@pdf-lib/fontkit": "^1.1.1",
-    "jszip": "^3.10.1",
-    "file-saver": "^2.0.5",
-    "sortablejs": "^1.15.0",
-    "lucide": "^0.294.0",
-    "jspdf": "^2.5.1",
-    "canvas": "^2.11.2",
-    "qrcode": "^1.5.3",
-    "jsbarcode": "^3.11.6",
+    "animejs": "^3.2.2",
     "color": "^4.2.3",
+    "electron-store": "^8.1.0",
+    "electron-updater": "^6.1.4",
+    "file-saver": "^2.0.5",
+    "jsbarcode": "^3.11.6",
+    "jspdf": "^2.5.1",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
-    "mousetrap": "^1.6.5"
+    "lucide": "^0.294.0",
+    "mime-types": "^2.1.35",
+    "mousetrap": "^1.6.5",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.11.174",
+    "qrcode": "^1.5.3",
+    "sortablejs": "^1.15.0"
   },
   "build": {
     "appId": "com.livformat.viewer",
@@ -64,7 +64,9 @@
       {
         "from": "../bin/",
         "to": "bin/",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "mac": {
@@ -73,7 +75,10 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "fileAssociations": [
@@ -90,7 +95,10 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64", "ia32"]
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ],
       "fileAssociations": [
@@ -107,11 +115,15 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "deb",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "fileAssociations": [
